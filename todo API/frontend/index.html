@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todo List with Vue 3</title>
+  <title>Todo List with Vue 3 and Axios</title>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
   <div id="app">
@@ -16,6 +17,7 @@
         <p>{{ todo.body }}</p>
       </li>
     </ul>
+    <p v-if="todos.length === 0">Loading todos...</p>
   </div>
 
   <script>
@@ -24,12 +26,22 @@
     createApp({
       data() {
         return {
-          todos: [
-            { id: 1, title: 'Todo 1', body: 'This is the body of Todo 1.' },
-            { id: 2, title: 'Todo 2', body: 'This is the body of Todo 2.' },
-            { id: 3, title: 'Todo 3', body: 'This is the body of Todo 3.' }
-          ]
+          todos: []
         };
+      },
+      created() {
+        this.fetchTodos();
+      },
+      methods: {
+        fetchTodos() {
+          axios.get('http://127.0.0.1:8000/api/')
+            .then(response => {
+              this.todos = response.data;
+            })
+            .catch(error => {
+              console.error('Error fetching todos:', error);
+            });
+        }
       }
     }).mount('#app');
   </script>
