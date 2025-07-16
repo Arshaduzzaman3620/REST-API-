@@ -37,10 +37,19 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "accounts",
-    "posts",
+    "django.contrib.sites",
+    # 3rd-party apps
     "rest_framework",
     "corsheaders",
+    "rest_framework.authtoken",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
+    # Local
+    "accounts",
+    "posts",
 ]
 
 AUTH_USER_MODEL = "accounts.CustomUser"
@@ -52,6 +61,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -133,6 +143,10 @@ REST_FRAMEWORK = {  # new
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
 }
 CORS_ALLOWED_ORIGINS = (  # new
     "http://localhost:3000",
@@ -140,3 +154,13 @@ CORS_ALLOWED_ORIGINS = (  # new
 )
 
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+
+# django-allauth configurations
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",  
+]
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+SITE_ID = 1
