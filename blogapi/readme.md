@@ -1,7 +1,6 @@
 # Blog API
 
-A simple RESTful API for managing blog posts, built with Node.js and Express.
-
+A simple RESTful API for managing blog posts
 ## Features
 
 - Create, read, update, and delete blog posts
